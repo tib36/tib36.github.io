@@ -2,7 +2,7 @@
 <html>
 	<head>
 		
-<title>文章归档-这里是一个普通学生的博客</title>
+<title>ysoserial反制上线CS-这里是一个普通学生的博客</title>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
@@ -11,8 +11,9 @@
 <link rel="stylesheet" href="/css/index.css">
 
 
-<meta name="keywords" content="hexo主题,hexo扁平化主题,Quiet主题">
-<meta name="description" content="描述">
+
+<meta name="keywords" content="网络安全,">
+<meta name="description" content="">
 
 
 <script src="/js/jquery.min.js"></script>
@@ -38,9 +39,6 @@
 
 	<body>
 		
-
-    
-    
 	<div class="header">
 		<div class="header-top" id="header-top">
 			<div class="h-left">
@@ -61,13 +59,13 @@
 								
 									
 						
-							<li class="select">
-								<a href="/archives">
-									ARCHIVE
-								</a>
-								<span class="dot"></span>
-							</li>
-							
+								<li>
+									<a href="/archives">
+										ARCHIVE
+									</a>
+									<span class="dot"></span>
+								</li>
+								
 									
 						
 								<li>
@@ -278,54 +276,142 @@
 
 </script>
 
-    
-
-
-
-<div class="archive">
-    
-        <div class="header-body-background">
-    <div class="header-body-background-content">
-        <span>
-            <img src="/image/logo.png" alt="Quiet">
-        </span>
-
-        <h2>共有 3 篇文章</h2>
+<div class="post">
+    <div class="post-header-background post-header-color"
+    style="background: url('')" 
+>
+    <div class="post-header-background-content">
+        <ul class="post-header-tag">
+            
+            
+            <li><a href="/tags/网络安全">网络安全</a></li>
+            
+            
+        </ul>
+        
+        <h1>ysoserial反制上线CS</h1>
+        <div class="post-header-info">
+            <div class="post-header-info-author">
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 20 20">
+                        <g>
+                            <path fill="#12183A"
+                                d="M6.187 15.265A6.47 6.47 0 0 0 10 16.5a6.47 6.47 0 0 0 3.813-1.235A4.99 4.99 0 0 0 10 13.5a4.99 4.99 0 0 0-3.813 1.765zM5.082 14.25A6.485 6.485 0 0 1 10 12c1.965 0 3.726.872 4.918 2.25a6.5 6.5 0 1 0-9.836 0zM10 18a8 8 0 1 1 0-16 8 8 0 0 1 0 16zm0-7a3 3 0 1 1 0-6 3 3 0 0 1 0 6zm0-1.5a1.5 1.5 0 1 0 0-3 1.5 1.5 0 0 0 0 3z">
+                            </path>
+                        </g>
+                    </svg>
+                
+                <span class="post-header-info-author-text"> <a href="../../about">Nokali</a></span>
+                <div class="post-header-info-author-categories">
+                    
+                </div>
+                <p>2023-02-11 10:23:02</p>
+            </div>
+        </div>
     </div>
 </div>
+    <div class="post-content" id="content">
+  
+  <div id="article" class="post-content-info">
     
-    <div class="archive-content" id="content">
-        <div class="archive-content-data">
-            <div class="grouping">
-    
-        <p>
-            2023
-        </p>
-        
-        <a href="/2023/02/11/ysoserial反制上线CS/">
-            <span>ysoserial反制上线CS</span>
-            <time>02-11</time>
-        </a>
-        
-        <a href="/2023/02/08/BurpSuite简单反制/">
-            <span>BurpSuite简单反制</span>
-            <time>02-08</time>
-        </a>
-        
-        <a href="/2023/02/08/2023-2-8/">
-            <span>一篇没什么意义的文章</span>
-            <time>02-08</time>
-        </a>
-        
-        
+
+    <h1 id="ysoserial-1day-RCE"><a href="#ysoserial-1day-RCE" class="headerlink" title="ysoserial 1day RCE"></a>ysoserial 1day RCE</h1><p>仍然是来谈谈工具反制问题</p>
+<p>ysoserial是一款用于利用Java应用安全漏洞的工具，在很久之前其官方github有人提了一个RCE issue：</p>
+<p><a target="_blank" rel="noopener" href="https://github.com/frohoff/ysoserial/issues/171">https://github.com/frohoff/ysoserial/issues/171</a></p>
+<p>并且issue的作者已经给出了相应的POC</p>
+<p><strong>首先，按照惯例，仍然是强调本资料仅作技术探讨学习之用，严禁任何违法行为</strong></p>
+<p>相比于之前提到的Burp反制，这次的工具影响比较小一些，但是在github上仍然有6k star</p>
+<p>而且如果是做Java安全，ysoserial基本上也是必不可少</p>
+<p>同样的，先讲一讲原理：</p>
+<p>首先，我Java水平很烂，最多懂一点php。。简单看了一下网上关于这个洞的分析，大致讲就是反序列化的过程是双向的，客户端可以触发服务端的反序列化，同样，服务端也能触发客户端的反序列化，而ysoserial在registry.list&#x2F;bind处存在能被服务端远程触发反序列化的点，虽然需要Gadget来构造利用链但是这个工具基本上本身就是Gadget的集合所以也完全不缺Gadget。。然后就。。</p>
+<p>利用链：</p>
+<p><code>RegistryImpl_Stub#list-&gt;UnicastRef#invoke-&gt;StreamRemoteCall#executeCall-&gt;ObjectInputStream#readObject</code></p>
+<p>原Issue作者提供的POC：</p>
+<pre><code>java -cp ysoserial.jar ysoserial.exploit.JRMPListener 1099 CommonsCollections6 calc.exe
+
+java -cp ysoserial.jar ysoserial.exploit.RMIRegistryExploit localhost 1099 CommonsCollections6 whoami
+</code></pre>
+<p><img src="/2023/02/11/ysoserial%E5%8F%8D%E5%88%B6%E4%B8%8A%E7%BA%BFCS/1.png" alt="图片"></p>
+<p>同样的，这个漏洞也可以进行比较长的命令执行，按照惯例，这里在本地测试进行C2上线，本来打算用MSF的powershell上线功能，但是执行存在问题，无法上线</p>
+<p>于是使用CS，但是CS的原生powershell payload需要进行免杀处理，否则<strong>Windows Defender会拦截</strong>。</p>
+<p>由于我这里只是单纯在本地进行实验来探讨利用的可能性，故<strong>不考虑免杀问题</strong></p>
+<p><img src="/2023/02/11/ysoserial%E5%8F%8D%E5%88%B6%E4%B8%8A%E7%BA%BFCS/2.png" alt="图片"></p>
+<p>由于执行命令进行上线时要考虑特殊字符的问题，这里直接用<strong>powershell command</strong>来上线</p>
+<p><img src="/2023/02/11/ysoserial%E5%8F%8D%E5%88%B6%E4%B8%8A%E7%BA%BFCS/3.png" alt="图片"></p>
+<p><img src="/2023/02/11/ysoserial%E5%8F%8D%E5%88%B6%E4%B8%8A%E7%BA%BFCS/4.png" alt="图片"></p>
+<p><img src="/2023/02/11/ysoserial%E5%8F%8D%E5%88%B6%E4%B8%8A%E7%BA%BFCS/5.png" alt="图片"></p>
+<p><strong>客户端尝试利用，然后直接报错退出，但实际上已经上线CS，成功实现对攻击方的反制，拿下PC权限。</strong></p>
+
+  </div>
+  <div id=""></div>
 </div>
+
+<script>
+  
+Fancybox.bind('[data-fancybox="fancybox-gallery-img"]', {
+  dragToClose: true,
+  Toolbar: true,
+  closeButton: "top",
+  Image: {
+    zoom: true,
+  },
+  on: {
+    initCarousel: (fancybox) => {
+      const slide = fancybox.Carousel.slides[fancybox.Carousel.page];
+      fancybox.$container.style.setProperty(
+        "--bg-image",
+        `url("${slide.$thumb.src}")`
+      );
+    },
+    "Carousel.change": (fancybox, carousel, to, from) => {
+      const slide = carousel.slides[to];
+      fancybox.$container.style.setProperty(
+        "--bg-image",
+        `url("${slide.$thumb.src}")`
+      );
+    },
+  },
+});
+</script>
+
+<style>
+    #noneimg img {
+        display: none;
+        z-index: 9999;
+        /* width: 600px !important; */
+        min-width: 0%;
+        max-width: 90%;
+        max-height: 80%;
+        border-radius: 0px;
+        position: fixed;
+        box-shadow: 0 0 0px #c3c3c300 !important;
+        left: 0;
+        top: 0;
+        right: 0;
+        bottom: 0;
+        margin: auto !important;
+    }
+
+    @media screen and (max-width:600px) {
+        #noneimg img {
+            max-width: 88%
+        }
+    }
+</style>
+
+    <div class="post-paging">
+    
+
+    
+    <a href="/2023/02/08/BurpSuite%E7%AE%80%E5%8D%95%E5%8F%8D%E5%88%B6/">
+        <div class="post-paging-next">
+            <span>下一篇</span>
+            <p>BurpSuite简单反制</p>
         </div>
-    </div>    
+    </a>
+    
 </div>
-
-
-
-
+</div>
 		
 <div class="footer">
 	<div class="Copyright">
